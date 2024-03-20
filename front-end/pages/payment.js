@@ -1,5 +1,4 @@
-import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, Animated, Modal, TextInput, TouchableOpacity, Alert} from 'react-native'
-import {NativeBaseProvider, HStack} from 'native-base'
+import {View, Text, StyleSheet, Image, TouchableWithoutFeedback, Animated, Modal, TextInput, TouchableOpacity, Alert, SafeAreaView, Platform} from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
@@ -134,7 +133,7 @@ export const Payment = ({navigation, route}) => {
     }
 
     return (
-      <NativeBaseProvider>
+      <SafeAreaView>
         {/* PAYMENT MODAL  */}
         <Modal animationType='fade' transparent={true} visible={modal} onShow={() => startAnimateElem()} onRequestClose={() => {
                 setModal(false)
@@ -171,28 +170,28 @@ export const Payment = ({navigation, route}) => {
                 </View>
             </KeyboardAwareScrollView>
         </Modal>
-        <Animated.ScrollView style={[{ marginTop: "9%", backgroundColor: "#F3F4F6" }, opacityStyle]}>
+        <Animated.ScrollView style={[{ marginTop: Platform.OS == 'ios' ? '0%' : "9%", backgroundColor: "#F3F4F6" }, opacityStyle]}>
 
           {/* BACK-ARROW AND USER  */}
-          <HStack space={20} justifyContent="space-between" style={{marginTop: '2%'}}>
-            <AntDesign
-              name="arrowleft"
-              size={24}
-              color="black"
-              style={styles.arrow}
-              onPress={() => navigation.goBack()}
-            />
+          <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop: '2%'}}>
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrow}>
+              <AntDesign
+                name="arrowleft"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('User', {'user':forProfile, 'token':route.params.token})}>
               <Image
                 source={{uri: route.params.user.photo}}
                 style={styles.account}
               />
             </TouchableWithoutFeedback>
-          </HStack>
+          </View>
 
           {/* CARDS */}
           <View style={{ marginLeft: "8%", marginRight: "8%" }}>
-            <HStack justifyContent="space-between">
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <Text
                 style={{
                   fontFamily: "Roboto-Medium",
@@ -203,43 +202,45 @@ export const Payment = ({navigation, route}) => {
                 Your Card
               </Text>
               {payment == 'None' &&
-                <Entypo
-                name="plus"
-                size={24}
-                color="white"
-                style={styles.addCard}
-                onPress={() => {setModal(true)}}
-              />
+                <TouchableOpacity style={styles.addCard} onPress={() => {setModal(true)}}>
+                    <Entypo
+                    name="plus"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
               }
-            </HStack>
-            <Text style={styles.bankcard}>Bank Card</Text>
+            </View>
+            <View style={styles.bankcard}>
+              <Text style={{fontFamily: "Roboto-Regular"}}>Bank Card</Text>
+            </View>
             {payment != 'None' 
             ? <View>
             {paymentSys1.id == 2 
                 ? <View style={styles.cardMaster}>
                     <Image source={require("../images/mastercard.png")} style={{ width: '18%', height: '21%'}}/>
                     <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                    <HStack space={5} justifyContent='flex-start' style={{marginTop: '10%'}}>
+                    <View style={{marginTop: '10%', flexDirection: 'row'}}>
                         <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
-                        <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
-                    </HStack>
-                    <HStack space={47.9} justifyContent='flex-start'>
+                        <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
                         <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
-                        <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3.5%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
-                    </HStack>
+                        <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '17%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
+                    </View>
                   </View>
 
                 : <View style={styles.cardVisa}>
                     <Image source={require("../images/visa.png")} style={{ width: '20%', height: '21%'}}/>
                     <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                    <HStack space={5} justifyContent='flex-start' style={{marginTop: '10%'}}>
+                    <View style={{flexDirection: 'row', marginTop: '10%'}}>
                         <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
-                        <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
-                    </HStack>
-                    <HStack space={47.9} justifyContent='flex-start'>
+                        <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
                         <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
-                        <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
-                    </HStack>
+                        <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '17%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
+                    </View>
                   </View>
             }
             </View>
@@ -249,10 +250,10 @@ export const Payment = ({navigation, route}) => {
 
           {/* CAR RENTAL AND CHECKOUT  */}
           <View style={{backgroundColor: 'white', borderTopRightRadius: 25, borderTopLeftRadius: 25, paddingTop: '8%'}}>
-            <HStack justifyContent='space-between' style={{marginLeft: "6%", marginRight: '6%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between',marginLeft: "6%", marginRight: '6%'}}>
                 <Text style={{color: 'grey', fontFamily: 'Roboto-Light', fontSize: 13}}>Rent Car</Text>
                 <Text style={{color: 'grey', fontFamily: 'Roboto-Light', fontSize: 13}}>Order №234231</Text>
-            </HStack>
+            </View>
             <View
                 style={{
                     borderBottomColor: 'grey',
@@ -262,13 +263,13 @@ export const Payment = ({navigation, route}) => {
                     marginTop: '3%'
                 }}
             />
-            <HStack justifyContent='space-between' style={{marginLeft: '6%', marginRight: '6%', marginTop: '3%'}}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between',marginLeft: '6%', marginRight: '6%', marginTop: '3%'}}>
                 <View style={{marginTop: '3%'}}>
                     <Text style={{fontFamily: 'Roboto-Bold', fontSize: 20}}>{route.params.rentedCar.full_name}</Text>
                     <Text style={{fontFamily: 'Roboto-Light', fontSize: 13, color: 'grey'}}>${route.params.rentedCar.price_per_day} / day x {route.params.days} days</Text>
                 </View>
                 <Text style={{fontFamily: "Montserrat-Medium", fontSize: 40, fontWeight: 300, marginTop:'2%', marginBottom: '1%'}}><Text style={{fontSize: 23}}>$ </Text>{total}</Text>
-            </HStack>
+            </View>
             <View
                 style={{
                     borderBottomColor: 'grey',
@@ -290,7 +291,9 @@ export const Payment = ({navigation, route}) => {
                 Alert.alert('Operation Status', 'Success')
                 navigation.navigate('User', {'user':forProfile, 'token':route.params.token})
               }}>
-                <Text style={styles.payNow}>Pay Now</Text>
+                <View style={styles.payNow}>
+                  <Text style={{fontFamily: 'Roboto-Bold',fontSize: 20}}>Pay Now</Text>
+                </View>
               </TouchableOpacity>
             : <View>
               <Text style={{fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center', color: 'red', marginTop: '10%', marginBottom: '50%'}}>Add Your Payment Method Above</Text>
@@ -299,7 +302,7 @@ export const Payment = ({navigation, route}) => {
           </View>
 
         </Animated.ScrollView>
-      </NativeBaseProvider>
+      </SafeAreaView>
     );
 }
 
@@ -328,13 +331,11 @@ const styles = StyleSheet.create({
     },
     bankcard: {
         backgroundColor: '#F5B754',
-        color: 'white',
-        fontFamily: "Roboto-Regular",
         alignSelf: 'flex-start',
         paddingHorizontal: '6%',
         paddingVertical: "3%",
+        borderRadius: 15,
         marginTop: '3%',
-        borderRadius: 10
     },
     cardMaster: {
       backgroundColor: '#1e2125',
@@ -342,7 +343,7 @@ const styles = StyleSheet.create({
       paddingTop: '8%',
       paddingLeft: '10%',
       paddingRight: '10%',
-      paddingBottom: '8%',
+      paddingBottom: '10%',
       borderRadius: 25,
   },
   cardVisa: {
@@ -351,7 +352,7 @@ const styles = StyleSheet.create({
       paddingTop: '8%',
       paddingLeft: '10%',
       paddingRight: '10%',
-      paddingBottom: '8%',
+      paddingBottom: '10%',
       borderRadius: 25,
       borderWidth: 1,
       borderColor: '#c9c6c5',
@@ -363,8 +364,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         paddingHorizontal: '35%',
         paddingVertical: '4%',
-        fontFamily: 'Roboto-Bold',
-        fontSize: 20,
         borderRadius: 20,
         marginBottom: '40%'
     },

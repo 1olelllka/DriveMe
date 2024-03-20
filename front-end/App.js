@@ -17,17 +17,10 @@ export default function App() {
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name="Home" component={Main} />
           <Stack.Screen name="List" component={List} />
-          {/* <Stack.Screen name="User" component={User} /> */}
-          {/* <Stack.Screen name="Detail" component={Detail} /> */}
-          {/* <Stack.Screen name="Payment" component={Payment} /> */}
+          <Stack.Screen name="User" component={User} />
+          <Stack.Screen name="Detail" component={Detail} />
+          <Stack.Screen name="Payment" component={Payment} />
         </Stack.Navigator>
       </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-});

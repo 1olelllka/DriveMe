@@ -1,6 +1,5 @@
 import { useFonts } from 'expo-font';
-import { HStack, NativeBaseProvider } from "native-base"
-import { StyleSheet, View, Image, Text, TextInput, Animated, Modal, TouchableOpacity, RefreshControl, ScrollView, Alert} from "react-native"
+import { StyleSheet, View, Image, Text, TextInput, Animated, Modal, TouchableOpacity, RefreshControl, ScrollView, Alert, SafeAreaView, Platform} from "react-native"
 import {AntDesign} from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState, useRef, useCallback } from 'react';
@@ -215,237 +214,240 @@ export const User = ({navigation, route}) => {
     }
 
     return (
-        <ScrollView refreshControl={
-            <RefreshControl refreshing={refresh} onRefresh={onRefresh}/>
-        }>
-            <NativeBaseProvider>
-                        {/* PAYMENT  */}
-                        <Modal animationType='fade' transparent={true} visible={modal} onShow={() => startAnimateElem()} onRequestClose={() => {
-                            setModal(false)
-                            endAnimateElem()
-                            }}>
-                            <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
-                                <View style={styles.modal}>
-                                    <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Payment System</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={paymentSys} onChangeText={setPaymentSys} maxLength={10} placeholder='VISA/Mastercard'/>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Card Number</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={number} onChangeText={setNumber} keyboardType='numeric' maxLength={19} placeholder='Your Card Number (with spaces)'/>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Valid Date</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={valid} maxLength={5} onChangeText={setValid} placeholder='Your Valid Date'/>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your CVV</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={cvvdate} onChangeText={setCVV} maxLength={3} keyboardType='numeric' placeholder='Your CVV' secureTextEntry={true}/>
-                                    <TouchableOpacity onPress={() => {
-                                        if ((paymentSys == 'Mastercard' || paymentSys == 'VISA') && number != '' && valid.length != 3 && cvv.length != 3) {
-                                            endAnimateElem()
-                                            deletePayment(payment.id)
-                                            create_payment({
-                                                'payment_sys':paymentSys,
-                                                'number':number,
-                                                'valid':valid,
-                                                'cvv': parseInt(cvvdate)
-                                            })
-                                            onRefresh()
-                                            setModal(false)
-                                        } else {
-                                            Alert.alert('Error', 'Please Provide Your Payment Details')
-                                        }
-                                        }}>
-                                        <Text style={styles.submit}>Submit</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </KeyboardAwareScrollView>
-                        </Modal>
-                        {/* EDIT DATA */}
-                        <Modal animationType='fade' transparent={true} visible={editModal} onShow={() => startAnimateElem()} onRequestClose={() => {
-                            setEdit(false)
-                            endAnimateElem()
-                            }}>
-                            <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
-                                <View style={styles.modal}>
-                                    <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Edit Your Profile</Text>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Full Name</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={fullname} onChangeText={setFullname} placeholder='Your Full Name' />
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Email</Text>
-                                    <TextInput style={styles.loginUsernameInput} value={email} onChangeText={setEmail} placeholder='Your Email'/>
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit Your Date of Birth</Text>
-                                    <DateField
-                                        labelDate="Day"
-                                        styleInput={{fontFamily: 'Roboto-Regular', fontSize: 18, borderBottomWidth: 1}}
-                                        containerStyle={{justifyContent: 'space-evenly', marginTop: '4%', marginBottom: '1%'}}
-                                        onSubmit={(value) => setDate(value)}
-                                        />
-
-                                    <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Upload your photo</Text>
-                                    {photo != '' &&
-                                        <Text style={{fontFamily: 'Roboto-Medium', fontSize: 15, color: 'green', marginTop: '2%', marginLeft: '6%'}}>*Uploaded</Text>
-                                    }
-                                    <TouchableOpacity
-                                    onPress={pickImage}
-                                    style={{alignSelf: 'center', marginTop: '5%', borderRadius: 20, borderWidth: 1, paddingHorizontal: '5%', paddingVertical: '4%'}}
-                                    >
-                                        <Text style={{fontFamily: 'Roboto-Medium', fontSize: 16}}>Select Photo</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => {
+        <SafeAreaView>
+            <ScrollView refreshControl={
+                <RefreshControl refreshing={refresh} onRefresh={onRefresh}/>
+            }>
+                    {/* PAYMENT  */}
+                    <Modal animationType='fade' transparent={true} visible={modal} onShow={() => startAnimateElem()} onRequestClose={() => {
+                        setModal(false)
+                        endAnimateElem()
+                        }}>
+                        <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
+                            <View style={styles.modal}>
+                                <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Payment System</Text>
+                                <TextInput style={styles.loginUsernameInput} value={paymentSys} onChangeText={setPaymentSys} maxLength={10} placeholder='VISA/Mastercard'/>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Card Number</Text>
+                                <TextInput style={styles.loginUsernameInput} value={number} onChangeText={setNumber} keyboardType='numeric' maxLength={19} placeholder='Your Card Number (with spaces)'/>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Valid Date</Text>
+                                <TextInput style={styles.loginUsernameInput} value={valid} maxLength={5} onChangeText={setValid} placeholder='Your Valid Date'/>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your CVV</Text>
+                                <TextInput style={styles.loginUsernameInput} value={cvvdate} onChangeText={setCVV} maxLength={3} keyboardType='numeric' placeholder='Your CVV' secureTextEntry={true}/>
+                                <TouchableOpacity onPress={() => {
+                                    if ((paymentSys == 'Mastercard' || paymentSys == 'VISA') && number != '' && valid.length != 3 && cvv.length != 3) {
                                         endAnimateElem()
-                                        formdata.append('username', route.params.user.username)
-                                        if (email == '') {
-                                            formdata.append('email', route.params.user.email)
-                                        } else {
-                                            formdata.append('email', email)
-                                        }
-                                        if (fullname == '') {
-                                            formdata.append('full_name', route.params.user.full_name)
-                                        } else {
-                                            formdata.append('full_name', fullname)
-                                        }
-                                        formdata.append('password', route.params.user.password)
-                                        formdata.append('photo', photo)
-                                        if (date) {
-                                            formdata.append('date_of_birth', moment(date).format("YYYY-MM-DD"))
-                                        }
-                                        edit(formdata)
+                                        deletePayment(payment.id)
+                                        create_payment({
+                                            'payment_sys':paymentSys,
+                                            'number':number,
+                                            'valid':valid,
+                                            'cvv': parseInt(cvvdate)
+                                        })
                                         onRefresh()
-                                        setEdit(false)
-                                        }}>
-                                        <Text style={styles.submit}>Submit</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </KeyboardAwareScrollView>
-                        </Modal>
-                        <Animated.ScrollView style={[{backgroundColor: '#f2f2f2'}, opacityStyle]}>
-                            <HStack space={8} justifyContent='flex-start'>
-                                <AntDesign name="arrowleft" size={33} color="black" style={styles.back} onPress={() => navigation.navigate('List')} />
-                                <Text style={{marginTop: '11%',fontFamily: 'Roboto-Bold', fontSize: 36, marginLeft: '3%'}}>Your Profile</Text>
-                            </HStack>
-
-                            {/* PROFILE  */}
-
-                            <HStack space={3} justifyContent='space-evenly' style={{marginTop: '3%', marginBottom: '7%'}}>
-                                {profile.photo
-                                ? <Image source={{uri: img}} style={{height: 220, width: 220, borderRadius: 20, alignSelf: 'flex-start', marginLeft: '4%'}}/>
-                                : <View style={styles.noPhoto}>
-                                    <Text style={{textAlign: 'center', fontFamily: 'Roboto-Medium', fontSize: 25}}>No Photo</Text>
-                                </View>
-                                }
-                                <View style={{paddingHorizontal: '5%', borderRadius: 20, maxWidth: 205}}>
-                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 26, marginTop: '10%'}}>{profile.full_name}</Text>
-                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 15, marginTop: '5%'}}>{profile.email}</Text>
-                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 13, marginTop: '5%'}}>Date of Birth: {moment(profile.date_of_birth).format('DD.MM.YYYY')}</Text>
-                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 13, marginTop: '5%'}}>Registered: {moment(profile.registered_since).format('DD.MM.YYYY')}</Text>
-                                </View>
-                            </HStack>
-
-                            <View>
-                                <TouchableOpacity style={styles.edit} onPress={() => setEdit(true)}>
-                                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20, textAlign: 'center'}}>Edit Your Data</Text>
+                                        setModal(false)
+                                    } else {
+                                        Alert.alert('Error', 'Please Provide Your Payment Details')
+                                    }
+                                    }}>
+                                    <Text style={styles.submit}>Submit</Text>
                                 </TouchableOpacity>
                             </View>
+                        </KeyboardAwareScrollView>
+                    </Modal>
+                    {/* EDIT DATA */}
+                    <Modal animationType='fade' transparent={true} visible={editModal} onShow={() => startAnimateElem()} onRequestClose={() => {
+                        setEdit(false)
+                        endAnimateElem()
+                        }}>
+                        <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
+                            <View style={styles.modal}>
+                                <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Edit Your Profile</Text>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Full Name</Text>
+                                <TextInput style={styles.loginUsernameInput} value={fullname} onChangeText={setFullname} placeholder='Your Full Name' />
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Email</Text>
+                                <TextInput style={styles.loginUsernameInput} value={email} onChangeText={setEmail} placeholder='Your Email'/>
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit Your Date of Birth</Text>
+                                <DateField
+                                    labelDate="Day"
+                                    styleInput={{fontFamily: 'Roboto-Regular', fontSize: 18, borderBottomWidth: 1}}
+                                    containerStyle={{justifyContent: 'space-evenly', marginTop: '4%', marginBottom: '1%'}}
+                                    onSubmit={(value) => setDate(value)}
+                                    />
 
-                            {/* RENTED CAR */}
+                                <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Upload your photo</Text>
+                                {photo != '' &&
+                                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 15, color: 'green', marginTop: '2%', marginLeft: '6%'}}>*Uploaded</Text>
+                                }
+                                <TouchableOpacity
+                                onPress={pickImage}
+                                style={{alignSelf: 'center', marginTop: '5%', borderRadius: 20, borderWidth: 1, paddingHorizontal: '5%', paddingVertical: '4%'}}
+                                >
+                                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 16}}>Select Photo</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    endAnimateElem()
+                                    formdata.append('username', route.params.user.username)
+                                    if (email == '') {
+                                        formdata.append('email', route.params.user.email)
+                                    } else {
+                                        formdata.append('email', email)
+                                    }
+                                    if (fullname == '') {
+                                        formdata.append('full_name', route.params.user.full_name)
+                                    } else {
+                                        formdata.append('full_name', fullname)
+                                    }
+                                    formdata.append('password', route.params.user.password)
+                                    formdata.append('photo', photo)
+                                    if (date) {
+                                        formdata.append('date_of_birth', moment(date).format("YYYY-MM-DD"))
+                                    }
+                                    edit(formdata)
+                                    onRefresh()
+                                    setEdit(false)
+                                    }}>
+                                    <Text style={styles.submit}>Submit</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </KeyboardAwareScrollView>
+                    </Modal>
+                    <Animated.ScrollView style={[{backgroundColor: '#f2f2f2'}, opacityStyle]}>
+                        <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start', }}>
+                            <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('List')}>
+                                <AntDesign name="arrowleft" size={33} color="black" />
+                            </TouchableOpacity>
+                            <Text style={{marginTop: Platform.OS === 'ios' ? '2%' : '11%',fontFamily: 'Roboto-Bold', fontSize: 36, marginLeft: '10%',}}>Your Profile</Text>
+                        </View>
 
-                            {car && 
-                                <View style={{backgroundColor: '#fff', borderTopRightRadius: 20, borderTopLeftRadius: 20}}>
-                                    <HStack justifyContent='space-between' style={{marginTop: "5%"}}>
-                                        <Text style={{marginTop: '2%', fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Rented Car</Text>
-                                        <Entypo name="minus" size={28} color="black" style={{
-                                            alignSelf: 'center',
-                                            marginRight: '5%', 
-                                            borderWidth: 1, 
-                                            borderRadius: 20, 
-                                            paddingVertical: '1.2%', 
-                                            paddingLeft: '2%', 
-                                            paddingRight: '1.5%',
-                                            paddingTop: '1.5%'}} 
-                                            onPress={() => {
-                                                Alert.alert('Warning', 'Are you sure by canceling your order?', [
-                                                    {
-                                                        text: 'Cancel',
-                                                        style: 'cancel',
-                                                    },
-                                                    {
-                                                      text: 'Yes, I am sure',
-                                                      onPress: () => deleteRentedCar()
-                                                      ,
-                                                    },
-                                                ])
-                                            }}/>
-                                    </HStack>
-                                    <View>
-                                        <Image source={{uri: car.image}} style={{height: 235, width: 400, marginTop: '10%'}}/>
-                                    </View>
-                                    <HStack justifyContent='space-between' style={{marginLeft: '4%', marginRight: '4%', marginTop: '2%'}}>
-                                        <Text style={{fontFamily: 'Roboto-Regular', fontSize: 23}}>{car.full_name}</Text>
-                                        <Text style={{fontFamily: 'Roboto-Regular', fontSize: 23}}>
-                                            <Entypo name="time-slot" size={25} color="black"/>
-                                            {rentedCar.days} days
-                                        </Text>
-                                    </HStack>
-                                    <Text style={{alignSelf: 'flex-end', fontFamily: 'Roboto-Regular', fontSize: 20, marginRight: '3.5%', marginTop: '2%', marginBottom: '10%'}}>Total: ${rentedCar.total}</Text>
-                                </View>
+                        {/* PROFILE  */}
+
+                        <View style={{flex:1, flexDirection: 'row', justifyContent:'space-evenly', marginTop: '3%', marginBottom: '7%'}}>
+                            {profile.photo
+                            ? <Image source={{uri: img}} style={{height: 220, width: 220, borderRadius: 20, alignSelf: 'flex-start', marginLeft: '4%'}}/>
+                            : <View style={styles.noPhoto}>
+                                <Text style={{textAlign: 'center', fontFamily: 'Roboto-Medium', fontSize: 25}}>No Photo</Text>
+                            </View>
                             }
-                            {/* PAYMENT DETAILS  */}
+                            <View style={{paddingHorizontal: '5%', borderRadius: 20, maxWidth: 205}}>
+                                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 26, marginTop: '10%'}}>{profile.full_name}</Text>
+                                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 15, marginTop: '5%'}}>{profile.email}</Text>
+                                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 13, marginTop: '5%'}}>Date of Birth: {moment(profile.date_of_birth).format('DD.MM.YYYY')}</Text>
+                                <Text style={{fontFamily: 'Roboto-Regular', fontSize: 13, marginTop: '5%'}}>Registered: {moment(profile.registered_since).format('DD.MM.YYYY')}</Text>
+                            </View>
+                        </View>
+
+                        <View>
+                            <TouchableOpacity style={styles.edit} onPress={() => setEdit(true)}>
+                                <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20, textAlign: 'center'}}>Edit Your Data</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* RENTED CAR */}
+
+                        {car && 
                             <View style={{backgroundColor: '#fff', borderTopRightRadius: 20, borderTopLeftRadius: 20}}>
-                                {payment != 'None' 
-                                ? <HStack justifyContent='space-between' style={{marginTop: "5%"}}>
+                                <View style={{flex:1 ,flexDirection: 'row', justifyContent:'space-between', marginTop: "5%"}}>
+                                    <Text style={{marginTop: '2%', fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Rented Car</Text>
+                                    <Entypo name="minus" size={28} color="black" style={{
+                                        alignSelf: 'center',
+                                        marginRight: '5%', 
+                                        borderWidth: 1, 
+                                        borderRadius: 20, 
+                                        paddingVertical: '1.2%', 
+                                        paddingLeft: '2%', 
+                                        paddingRight: '1.5%',
+                                        paddingTop: '1.5%'}} 
+                                        onPress={() => {
+                                            Alert.alert('Warning', 'Are you sure by canceling your order?', [
+                                                {
+                                                    text: 'Cancel',
+                                                    style: 'cancel',
+                                                },
+                                                {
+                                                    text: 'Yes, I am sure',
+                                                    onPress: () => deleteRentedCar()
+                                                    ,
+                                                },
+                                            ])
+                                        }}/>
+                                </View>
+                                <View>
+                                    <Image source={{uri: car.image}} style={{height: 235, width: 400, marginTop: '0%'}}/>
+                                </View>
+                                <View style={{flex:1 ,flexDirection: 'row', justifyContent:'space-between', marginLeft: '4%', marginRight: '4%', marginTop: '2%'}}>
+                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 23}}>{car.full_name}</Text>
+                                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 23}}>
+                                        <Entypo name="time-slot" size={25} color="black"/>
+                                        {rentedCar.days} days
+                                    </Text>
+                                </View>
+                                <Text style={{alignSelf: 'flex-end', fontFamily: 'Roboto-Regular', fontSize: 20, marginRight: '3.5%', marginTop: '2%', marginBottom: '10%'}}>Total: ${rentedCar.total}</Text>
+                            </View>
+                        }
+
+                        {/* PAYMENT DETAILS  */}
+                        <View style={{backgroundColor: '#fff', borderTopRightRadius: 20, borderTopLeftRadius: 20, marginBottom:'25%'}}>
+                            {payment != 'None' 
+                            ? <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop:'5%'}}>
                                 <Text style={{fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Payment Details</Text>
-                                <Ionicons name="refresh" size={28} color="black" style={{
-                                    alignSelf: 'center', 
+                                <Ionicons name="refresh" size={29} color="black" style={{
                                     marginRight: '5%', 
                                     borderWidth: 1, 
                                     borderRadius: 20, 
                                     paddingVertical: '1.2%', 
                                     paddingLeft: '2%', 
-                                    paddingRight: '1%'}} 
+                                    paddingRight: '1%',
+                                    height:45}} 
                                 onPress={() => setModal(true)}/>
-                            </HStack>
-                                : <HStack justifyContent='space-between' style={{marginTop: "5%"}}>
-                                    <Text style={{fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Payment Details</Text>
-                                    <Entypo
-                                        name="plus"
-                                        size={30}
-                                        color="black"
-                                        style={styles.addCard}
-                                        onPress={() => setModal(true)}
-                                    />
-                                </HStack>
-                                }
-                                {payment != 'None' 
-                                ?
-                                    (payment.payment_sys.id == 2
-                                        ? <View style={styles.cardMaster}>
-                                            <Image source={require("../images/mastercard.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
-                                            <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                                            <HStack space={5} justifyContent='flex-start' style={{marginTop: '10%'}}>
-                                                <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
-                                                <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
-                                            </HStack>
-                                            <HStack space={47.9} justifyContent='flex-start'>
-                                                <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
-                                                <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
-                                            </HStack>
-                                        </View>
-
-                                        : <View style={styles.cardVisa}>
-                                            <Image source={require("../images/visa.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
-                                            <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                                            <HStack space={5} justifyContent='flex-start' style={{marginTop: '10%'}}>
-                                                <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
-                                                <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
-                                            </HStack>
-                                            <HStack space={47.9} justifyContent='flex-start'>
-                                                <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
-                                                <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
-                                            </HStack>
-                                        </View>
-                                    )
-                                : <Text style={{marginTop: '5%', marginLeft: '3%', marginBottom: '3%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Opps... don't have any cads yet</Text>
-                                }
                             </View>
+                            : <View style={{flexDirection: 'row', justifyContent:'space-between',marginTop: "5%"}}>
+                                <Text style={{fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Payment Details</Text>
+                                <Entypo
+                                    name="plus"
+                                    size={30}
+                                    color="black"
+                                    style={styles.addCard}
+                                    onPress={() => setModal(true)}
+                                />
+                            </View>
+                            }
+                            {payment != 'None'
+                            ?
+                                (payment.payment_sys !== undefined && payment.payment_sys.id == 2
+                                    ? <View style={styles.cardMaster}>
+                                        <Image source={require("../images/mastercard.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
+                                        <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
+                                        <View style={{flex:1 ,flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
+                                            <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
+                                            <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
+                                        </View>
+                                        <View style={{flex:1 ,flexDirection:'row', justifyContent:'flex-start', marginBottom: '4%'}}>
+                                            <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
+                                            <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '14%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
+                                        </View>
+                                    </View>
 
-                        </Animated.ScrollView>
-                    </NativeBaseProvider>
-        </ScrollView>
+                                    : <View style={styles.cardVisa}>
+                                        <Image source={require("../images/visa.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
+                                        <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
+                                        <View style={{flex:1 ,flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
+                                            <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
+                                            <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
+                                        </View>
+                                        <View style={{flex:1 ,flexDirection:'row', justifyContent:'flex-start', marginBottom: '4%'}}>
+                                            <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '3%'}}>{payment.valid}</Text>
+                                            <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 17, marginLeft: '14%'}} onPress={() => setCvv(payment.cvv)}>{cvv}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            : <Text style={{marginTop: '5%', marginLeft: '3%', marginBottom: '3%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Opps... don't have any cads yet</Text>
+                            }
+                        </View>
+
+                    </Animated.ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -464,7 +466,7 @@ const styles = StyleSheet.create({
     back: {
         backgroundColor: '#fff',
         alignSelf: 'flex-start',
-        marginTop: '10.5%',
+        marginTop: Platform.OS === 'ios' ? '0' :'10.5%',
         marginBottom: '2%',
         marginLeft: '4%',
         padding: '2.5%',
@@ -512,7 +514,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingHorizontal: '0.5%',
         paddingTop: '0.5%',
-        backgroundColor: '#f2f2f2',
     },
     modal: {
         backgroundColor: 'white',

@@ -233,12 +233,12 @@ export const List = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             :
-                <View justifyContent='space-evenly'>
+                <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around'}}>
                     <TouchableOpacity style={styles.account} onPress={() => navigation.navigate('User', {'user': user, 'token':token.auth_token})}>
-                        <View justifyContent='space-around'>
+                        <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around'}}>
                             <Text style={{fontFamily: 'Roboto-Medium', fontSize: 23, alignSelf: 'center', marginLeft: '5%'}}>{user.full_name}</Text>
                             {user.photo 
-                            ? <Image source={{uri: user.photo}} style={{width: '23%', height: '190%', borderRadius: 15, alignSelf: 'center'}}/>
+                            ? <Image source={{uri: user.photo}} style={{width: '23%', height: '75%', borderRadius: 15, alignSelf: 'center'}}/>
                             : <Text style={styles.noPhoto}>No Photo</Text>
                             }
                         </View>
@@ -362,8 +362,8 @@ export const List = ({navigation}) => {
 const styles = StyleSheet.create({
     account: {
         backgroundColor: 'white',
-        marginTop: '12%',
-        paddingVertical: '6%',
+        marginTop: Platform.OS == 'ios' ? '2%' : '12%',
+        // paddingVertical: '4%',
         width: '65%',
         alignSelf: 'center',
         borderRadius: 25,
@@ -396,7 +396,7 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     logout: {
-        marginTop: '12%',
+        marginTop: '3%',
         backgroundColor: 'white',
         elevation: 1,
         borderRadius: 20,
