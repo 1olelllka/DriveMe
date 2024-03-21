@@ -71,9 +71,6 @@ export const Detail = ({navigation, route}) => {
         }).start()
     }
 
-    // console.log(car)
-    // console.log(route.params.user)
-
     // FONTS
     const [fontsLoaded] = useFonts({
         'Roboto-Bold': require('../fonts/Roboto-Bold.ttf'),
@@ -96,7 +93,18 @@ export const Detail = ({navigation, route}) => {
                     }}>
                 <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
                     <View style={styles.modal}>
-                        <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Booking</Text>
+                        {Platform.OS === 'ios' 
+                        ?
+                        <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                            <TouchableOpacity style={[styles.back, {borderRadius: 15, backgroundColor: '#dedede', borderWidth: 0}]} onPress={() => {
+                                setModal(false)
+                                endAnimateElem()}} >
+                                <AntDesign name="arrowleft" size={22} color="black" />
+                            </TouchableOpacity>
+                            <Text style={{marginTop: '2%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '20%'}}>Booking</Text>
+                        </View>
+                        : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Booking</Text>
+                        }
                         <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your City</Text>
                         <TextInput style={styles.rentalForm} value={city} onChangeText={setCity} placeholder='Your City'/>
                         <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Street</Text>
@@ -299,6 +307,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto-Medium',
         fontSize: 20,
         alignSelf: 'center',
+        borderColor: '#dedede',
         borderWidth: 1,
         borderRadius: 15,
         paddingHorizontal: '6%',

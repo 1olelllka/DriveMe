@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import {FontAwesome} from '@expo/vector-icons'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useState, useEffect, useRef } from 'react';
+import { AntDesign } from '@expo/vector-icons';
 
 
 export const List = ({navigation}) => {
@@ -60,7 +61,6 @@ export const List = ({navigation}) => {
             });
             if (token != 'none') {
                 setUser(data)
-                // console.log(data)
             }
         })
     }, [token, navigation, refreshed])
@@ -138,11 +138,6 @@ export const List = ({navigation}) => {
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    // console.log('USER----------------------',user)
-    // console.log('TOKEN -------- ',token.auth_token)
-    // console.log(carList)
-    // console.log(category)
-
 
     const [fontsLoaded] = useFonts({
         'Roboto-Bold': require('../fonts/Roboto-Bold.ttf'),
@@ -167,18 +162,32 @@ export const List = ({navigation}) => {
             endAnimateElem()
             }}>
             <View style={styles.modal}>
-                <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Log In Form</Text>
+                {Platform.OS === 'ios' 
+                ?
+                <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                    <TouchableOpacity style={styles.back} onPress={() => {
+                        setLoginModal(false)
+                        endAnimateElem()}} >
+                        <AntDesign name="arrowleft" size={22} color="black" />
+                    </TouchableOpacity>
+                    <Text style={{marginTop: '1%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '15%'}}>Log In Form</Text>
+                </View>
+                : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Log In Form</Text>
+                }
+                
                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Username</Text>
                 <TextInput style={styles.loginUsernameInput} value={loginUsername} onChangeText={setLoginUsername} placeholder='Username'/>
                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Password</Text>
                 <TextInput style={styles.loginUsernameInput} value={loginPassword} onChangeText={setLoginPassword}  placeholder='Password' secureTextEntry={true}/>
-                <TouchableOpacity onPress={() => {
+                <TouchableOpacity 
+                    style={styles.submit}
+                    onPress={() => {
                     login({'username': loginUsername.trim(), 'password': loginPassword})
                     setLoginModal(false)
                     setLoginPassword('')
                     endAnimateElem()
                     }}>
-                    <Text style={styles.submit}>Submit</Text>
+                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20}}>Submit</Text>
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -190,7 +199,18 @@ export const List = ({navigation}) => {
             }}>
             <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
                 <View style={styles.modalsignup}>
-                    <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Sign Up Form</Text>
+                    {Platform.OS === 'ios' 
+                    ?
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                        <TouchableOpacity style={styles.back} onPress={() => {
+                            setSignupModal(false)
+                            endAnimateElem()}} >
+                            <AntDesign name="arrowleft" size={22} color="black" />
+                        </TouchableOpacity>
+                        <Text style={{marginTop: '1%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '15%'}}>Sign Up Form</Text>
+                    </View>
+                    : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Sign Up Form</Text>
+                    }
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Username</Text>
                     <TextInput style={styles.loginUsernameInput} value={signupUsername} onChangeText={setSignupUsername} placeholder='Username'/>
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Full Name</Text>
@@ -199,7 +219,9 @@ export const List = ({navigation}) => {
                     <TextInput style={styles.loginUsernameInput} value={signupEmail} onChangeText={setSignupEmail} placeholder='Email'/>
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Password</Text>
                     <TextInput style={styles.loginUsernameInput} value={signupPassword} onChangeText={setSignupPassword}  placeholder='Password' secureTextEntry={true}/>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity 
+                        style={styles.submit}
+                        onPress={() => {
                         auth({'username': signupUsername, 'password': signupPassword, 'full_name': signupFullname, 'email': signupEmail})
                         setLoginUsername(signupUsername)
                         setSignupModal(false)
@@ -209,7 +231,7 @@ export const List = ({navigation}) => {
                         setSignupFullname('')
                         endAnimateElem()
                         }}>
-                        <Text style={styles.submit}>Submit</Text>
+                        <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20}}>Submit</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
@@ -233,7 +255,7 @@ export const List = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
             :
-                <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around'}}>
+                <View style={{flexDirection: 'row', justifyContent:'space-around'}}>
                     <TouchableOpacity style={styles.account} onPress={() => navigation.navigate('User', {'user': user, 'token':token.auth_token})}>
                         <View style={{flex:1, flexDirection: 'row', justifyContent:'space-around'}}>
                             <Text style={{fontFamily: 'Roboto-Medium', fontSize: 23, alignSelf: 'center', marginLeft: '5%'}}>{user.full_name}</Text>
@@ -355,7 +377,6 @@ export const List = ({navigation}) => {
             </View>
         </Animated.ScrollView>
         </SafeAreaView>
-    //   </NativeBaseProvider>
     );
 }
 
@@ -396,7 +417,7 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     logout: {
-        marginTop: '3%',
+        marginTop: Platform.OS == 'ios' ? '3%' : '12.5%',
         backgroundColor: 'white',
         elevation: 1,
         borderRadius: 20,
@@ -436,9 +457,9 @@ const styles = StyleSheet.create({
     },
     submit: {
         marginTop: '8%',
-        fontFamily: 'Roboto-Medium',
         fontSize: 20,
         alignSelf: 'center',
+        borderColor: '#dedede',
         borderWidth: 1,
         borderRadius: 15,
         paddingHorizontal: '6%',
@@ -455,5 +476,14 @@ const styles = StyleSheet.create({
         width: '23%',
         borderRadius: 10,
         backgroundColor: '#f2f2f2'
-    }
+    },
+    back: {
+        padding: '2.5%',
+        textAlign: 'center',
+        borderRadius: 15,
+        alignSelf: 'flex-start',
+        backgroundColor: '#dedede',
+        marginTop: Platform.OS == 'ios' ? '2% ':'10%',
+        marginLeft: '4%'
+    },
 })

@@ -4,6 +4,7 @@ import {AntDesign} from '@expo/vector-icons'
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import DateField from 'react-native-datefield'
 import * as ImagePicker from 'expo-image-picker';
@@ -225,7 +226,18 @@ export const User = ({navigation, route}) => {
                         }}>
                         <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
                             <View style={styles.modal}>
-                                <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
+                                {Platform.OS === 'ios' 
+                                ?
+                                <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                                    <TouchableOpacity style={[styles.back, {backgroundColor: '#dedede', borderRadius: 15}]} onPress={() => {
+                                        setModal(false)
+                                        endAnimateElem()}} >
+                                        <AntDesign name="arrowleft" size={22} color="black" />
+                                    </TouchableOpacity>
+                                    <Text style={{marginTop: '2%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '18%'}}>Add Card</Text>
+                                </View>
+                                : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
+                                }
                                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Payment System</Text>
                                 <TextInput style={styles.loginUsernameInput} value={paymentSys} onChangeText={setPaymentSys} maxLength={10} placeholder='VISA/Mastercard'/>
                                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Card Number</Text>
@@ -234,7 +246,8 @@ export const User = ({navigation, route}) => {
                                 <TextInput style={styles.loginUsernameInput} value={valid} maxLength={5} onChangeText={setValid} placeholder='Your Valid Date'/>
                                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your CVV</Text>
                                 <TextInput style={styles.loginUsernameInput} value={cvvdate} onChangeText={setCVV} maxLength={3} keyboardType='numeric' placeholder='Your CVV' secureTextEntry={true}/>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity style={styles.submit}
+                                    onPress={() => {
                                     if ((paymentSys == 'Mastercard' || paymentSys == 'VISA') && number != '' && valid.length != 3 && cvv.length != 3) {
                                         endAnimateElem()
                                         deletePayment(payment.id)
@@ -250,7 +263,7 @@ export const User = ({navigation, route}) => {
                                         Alert.alert('Error', 'Please Provide Your Payment Details')
                                     }
                                     }}>
-                                    <Text style={styles.submit}>Submit</Text>
+                                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20}}>Submit</Text>
                                 </TouchableOpacity>
                             </View>
                         </KeyboardAwareScrollView>
@@ -262,7 +275,18 @@ export const User = ({navigation, route}) => {
                         }}>
                         <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
                             <View style={styles.modal}>
-                                <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Edit Your Profile</Text>
+                                {Platform.OS === 'ios' 
+                                ?
+                                <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                                    <TouchableOpacity style={[styles.back, {backgroundColor: '#dedede', borderRadius: 15}]} onPress={() => {
+                                        setEdit(false)
+                                        endAnimateElem()}} >
+                                        <AntDesign name="arrowleft" size={22} color="black" />
+                                    </TouchableOpacity>
+                                    <Text style={{marginTop: '2%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '8%'}}>Edit Your Profile</Text>
+                                </View>
+                                : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Edit Your Profile</Text>
+                                }
                                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Full Name</Text>
                                 <TextInput style={styles.loginUsernameInput} value={fullname} onChangeText={setFullname} placeholder='Your Full Name' />
                                 <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Edit your Email</Text>
@@ -285,7 +309,9 @@ export const User = ({navigation, route}) => {
                                 >
                                     <Text style={{fontFamily: 'Roboto-Medium', fontSize: 16}}>Select Photo</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
+                                <TouchableOpacity 
+                                    style={styles.submit}
+                                    onPress={() => {
                                     endAnimateElem()
                                     formdata.append('username', route.params.user.username)
                                     if (email == '') {
@@ -307,7 +333,7 @@ export const User = ({navigation, route}) => {
                                     onRefresh()
                                     setEdit(false)
                                     }}>
-                                    <Text style={styles.submit}>Submit</Text>
+                                    <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20}}>Submit</Text>
                                 </TouchableOpacity>
                             </View>
                         </KeyboardAwareScrollView>
@@ -349,28 +375,29 @@ export const User = ({navigation, route}) => {
                             <View style={{backgroundColor: '#fff', borderTopRightRadius: 20, borderTopLeftRadius: 20}}>
                                 <View style={{flex:1 ,flexDirection: 'row', justifyContent:'space-between', marginTop: "5%"}}>
                                     <Text style={{marginTop: '2%', fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Rented Car</Text>
-                                    <Entypo name="minus" size={28} color="black" style={{
-                                        alignSelf: 'center',
-                                        marginRight: '5%', 
-                                        borderWidth: 1, 
-                                        borderRadius: 20, 
-                                        paddingVertical: '1.2%', 
-                                        paddingLeft: '2%', 
-                                        paddingRight: '1.5%',
-                                        paddingTop: '1.5%'}} 
-                                        onPress={() => {
-                                            Alert.alert('Warning', 'Are you sure by canceling your order?', [
-                                                {
-                                                    text: 'Cancel',
-                                                    style: 'cancel',
-                                                },
-                                                {
-                                                    text: 'Yes, I am sure',
-                                                    onPress: () => deleteRentedCar()
-                                                    ,
-                                                },
-                                            ])
-                                        }}/>
+                                   <TouchableOpacity style={{
+                                    justifyContent:'center',
+                                    marginRight: '5%',
+                                    backgroundColor: '#dedede',
+                                    paddingHorizontal: '2%',
+                                    borderRadius: 15
+                                   }}
+                                   onPress={() => {
+                                    Alert.alert('Warning', 'Are you sure by canceling your order?', [
+                                        {
+                                            text: 'Cancel',
+                                            style: 'cancel',
+                                        },
+                                        {
+                                            text: 'Yes, I am sure',
+                                            onPress: () => deleteRentedCar()
+                                            ,
+                                        },
+                                    ])
+                                    }}
+                                   >
+                                   <Ionicons name="trash-bin-outline" size={30} color="black" />
+                                   </TouchableOpacity> 
                                 </View>
                                 <View>
                                     <Image source={{uri: car.image}} style={{height: 235, width: 400, marginTop: '0%'}}/>
@@ -391,15 +418,17 @@ export const User = ({navigation, route}) => {
                             {payment != 'None' 
                             ? <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop:'5%'}}>
                                 <Text style={{fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Payment Details</Text>
-                                <Ionicons name="refresh" size={29} color="black" style={{
-                                    marginRight: '5%', 
-                                    borderWidth: 1, 
-                                    borderRadius: 20, 
-                                    paddingVertical: '1.2%', 
-                                    paddingLeft: '2%', 
-                                    paddingRight: '1%',
-                                    height:45}} 
-                                onPress={() => setModal(true)}/>
+                                <TouchableOpacity style={{
+                                    justifyContent:'center',
+                                    paddingHorizontal: '2%',
+                                    paddingVertical: '1.7%',
+                                    borderRadius: 15,
+                                    backgroundColor: '#dedede',
+                                    marginRight: '5%',
+                                    }}
+                                    onPress={() => setModal(true)}>
+                                    <MaterialCommunityIcons name="cloud-refresh" size={30} color="black" />
+                                </TouchableOpacity>
                             </View>
                             : <View style={{flexDirection: 'row', justifyContent:'space-between',marginTop: "5%"}}>
                                 <Text style={{fontFamily: 'Roboto-Bold', fontSize: 30, marginLeft: '3%'}}>Payment Details</Text>
@@ -418,7 +447,7 @@ export const User = ({navigation, route}) => {
                                     ? <View style={styles.cardMaster}>
                                         <Image source={require("../images/mastercard.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
                                         <Text style={{color: 'white', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                                        <View style={{flex:1 ,flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
+                                        <View style={{flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
                                             <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
                                             <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
                                         </View>
@@ -431,7 +460,7 @@ export const User = ({navigation, route}) => {
                                     : <View style={styles.cardVisa}>
                                         <Image source={require("../images/visa.png")} style={{ marginTop: '1.5%',width: '18%', height: '21%'}}/>
                                         <Text style={{color: '#000', fontFamily: 'Montserrat-Regular', fontSize: 23, marginTop: '6%', marginLeft: '2%'}}>{payment.number}</Text>
-                                        <View style={{flex:1 ,flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
+                                        <View style={{flexDirection: 'row', justifyContent:'flex-start', marginTop: '10%'}}>
                                             <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '2%'}}>VALID THRU</Text>
                                             <Text style={{color: '#686A6B', fontFamily: 'Roboto-Regular', fontSize: 14, marginLeft: '4%'}} onPress={() => setCvv(payment.cvv)}>CVV</Text>
                                         </View>
@@ -532,8 +561,6 @@ const styles = StyleSheet.create({
     },
     submit: {
         marginTop: '8%',
-        fontFamily: 'Roboto-Medium',
-        fontSize: 20,
         alignSelf: 'center',
         borderWidth: 1,
         borderRadius: 15,
@@ -546,10 +573,19 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-end',
         marginRight: '4%',
         borderWidth: 1,
+        borderColor: '#dedede',
         borderRadius: 20,
         paddingHorizontal: '4%',
         paddingVertical: '2%',
         marginBottom: '5%',
-        backgroundColor: '#fff'
-    }
+        backgroundColor: '#fff',
+    modalback: {
+        padding: '2.5%',
+        textAlign: 'center',
+        borderRadius: 15,
+        alignSelf: 'flex-start',
+        backgroundColor: '#dedede',
+        marginTop: Platform.OS == 'ios' ? '2% ':'10%',
+        marginLeft: '4%'
+    }}
 })

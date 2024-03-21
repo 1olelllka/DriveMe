@@ -60,7 +60,6 @@ export const Payment = ({navigation, route}) => {
         .then((data) => {
             setPayment(data.payment_details)
             setForProfile(data)
-            // console.log(data.payment_details)
         })
     }
     
@@ -141,7 +140,18 @@ export const Payment = ({navigation, route}) => {
                 }}>
             <KeyboardAwareScrollView resetScrollToCoords={{x:0, y:0}} showsVerticalScrollIndicator={false}>
                 <View style={styles.modal}>
-                    <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
+                    {Platform.OS === 'ios' 
+                    ?
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start', marginTop: '10%', marginBottom: '5%'}}>
+                        <TouchableOpacity style={[styles.arrow, {backgroundColor: '#dedede', padding: '2.5%', borderRadius: 15}]} onPress={() => {
+                            setModal(false)
+                            endAnimateElem()}} >
+                            <AntDesign name="arrowleft" size={22} color="black" />
+                        </TouchableOpacity>
+                        <Text style={{marginTop: '2%', fontFamily: 'Roboto-Medium', fontSize: 25, marginLeft: '18%'}}>Add Card</Text>
+                    </View>
+                    : <Text style={{marginTop: '10%', fontFamily: 'Roboto-Medium', fontSize: 25, textAlign: 'center'}}>Add Card</Text>
+                    }
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Payment System</Text>
                     <TextInput style={styles.loginUsernameInput} value={paymentSys} onChangeText={setPaymentSys} maxLength={10} placeholder='VISA/Mastercard'/>
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your Card Number</Text>

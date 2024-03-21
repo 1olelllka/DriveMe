@@ -2,7 +2,6 @@ import { useFonts } from 'expo-font';
 import { useCallback } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { NativeBaseProvider } from 'native-base';
 
 
 export const Main = ({navigation}) => {
@@ -29,7 +28,7 @@ export const Main = ({navigation}) => {
 
     return (
         <SafeAreaView style={{backgroundColor: '#24262D'}}>
-            <View style={{backgroundColor: '#24262D'}}>
+            <View onLayout={onLayoutRootView} style={{backgroundColor: '#24262D'}}>
                 <View style={{marginLeft: '5%', marginTop: '20%', marginBottom: '10%'}}>
                     <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 40, color: 'white'}}>Drive Me</Text>
                     <Text style={{ fontFamily: 'Roboto-Light', fontSize: 20, color: 'grey', width: '65%' }}>Rent the car of your dreams with home delivery</Text>
