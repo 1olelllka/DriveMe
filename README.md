@@ -26,6 +26,15 @@
     <li>React Navigation v6</li>
   </ul>
 </ul>
+<h3>Project Limitations and Problems:</h3>
+<ul>
+  <li>The app doesn't have payment systems</li>
+  <li>There're no google pay or apple pay features</li>
+  <li>The time remaining on rented car doesn't work (maybe I'll fix it one day)</li>
+  <li>If there're any errors while auth or login, you won't get specific error message</li>
+  <li>Some design problems can also occur, such as objects' sizes issues, etc.</li>
+  <li>Obviously, I don't posess any of these cars xD</li>
+</ul>
 <h3>Some Images from the project:</h3>
 <hr>
 <img width="351" alt="Screenshot 2024-03-21 at 18 40 40" src="https://github.com/1olelllka/DriveMe/assets/67587036/561827d0-1200-4795-b377-7b76c5aecd9e">
@@ -36,6 +45,4 @@
 <img width="351" alt="Screenshot 2024-03-21 at 18 44 43" src="https://github.com/1olelllka/DriveMe/assets/67587036/fb39c32a-7969-4440-8a5c-a1fb317463f2">
 <img width="351" alt="Screenshot 2024-03-21 at 18 45 25" src="https://github.com/1olelllka/DriveMe/assets/67587036/177fb376-a19b-464b-9fca-872db8a054f5">
 <img width="351" alt="Screenshot 2024-03-21 at 18 46 39" src="https://github.com/1olelllka/DriveMe/assets/67587036/9793735c-63d3-4088-9e89-e6eb4ebe72e8">
-
-
 
