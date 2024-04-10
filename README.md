@@ -26,6 +26,13 @@
     <li>React Navigation v6</li>
   </ul>
 </ul>
+
+```diff
+- Before running this project on your machine, run this command on back-end:
+
+python3 (or any other version of python) manage.py collectstatic
+```
+
 <h3>Project Limitations and Problems:</h3>
 <ul>
   <li>The app doesn't have payment systems</li>
