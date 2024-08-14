@@ -1,0 +1,33 @@
+-i https://pypi.org/simple
+asgiref==3.8.1; python_version >= '3.8'
+certifi==2024.7.4; python_version >= '3.6'
+cffi==1.17.0; platform_python_implementation != 'PyPy'
+charset-normalizer==3.3.2; python_full_version >= '3.7.0'
+cryptography==43.0.0; python_version >= '3.7'
+defusedxml==0.8.0rc2; python_version >= '3.6'
+django==5.1; python_version >= '3.10'
+django-cors-headers==4.4.0; python_version >= '3.8'
+django-templated-mail==1.1.1
+djangorestframework==3.15.2; python_version >= '3.8'
+djangorestframework-simplejwt==5.3.1; python_version >= '3.8'
+djoser==2.2.3; python_version >= '3.8' and python_version < '4.0'
+drf-extra-fields==3.7.0; python_version >= '3.7'
+drf-yasg==1.21.7; python_version >= '3.6'
+filetype==1.2.0
+idna==3.7; python_version >= '3.5'
+inflection==0.5.1; python_version >= '3.5'
+oauthlib==3.2.2; python_version >= '3.6'
+packaging==24.1; python_version >= '3.8'
+pillow==10.4.0; python_version >= '3.8'
+pycparser==2.22; python_version >= '3.8'
+pyjwt==2.9.0; python_version >= '3.8'
+python3-openid==3.2.0
+pytz==2024.1
+pyyaml==6.0.2; python_version >= '3.8'
+requests==2.32.3; python_version >= '3.8'
+requests-oauthlib==2.0.0; python_version >= '3.4'
+social-auth-app-django==5.4.2; python_version >= '3.8'
+social-auth-core==4.5.4; python_version >= '3.8'
+sqlparse==0.5.1; python_version >= '3.8'
+uritemplate==4.1.1; python_version >= '3.6'
+urllib3==2.2.2; python_version >= '3.8'
