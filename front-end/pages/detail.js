@@ -44,7 +44,7 @@ export const Detail = ({navigation, route}) => {
         })
         .then(response => response.json())
         .then((data) => {
-            if (data.detail == 'Not found.') {
+            if (data.detail == "No Rented_Car matches the given query.") {
                 setRent('None')
             } else if (data.car) {
                 setRent(data)

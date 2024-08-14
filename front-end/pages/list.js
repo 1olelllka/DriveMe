@@ -31,7 +31,6 @@ export const List = ({navigation}) => {
         .then(response => response.json())
         .then((data) => {
             setCarList(data)
-            console.log(data)
         })
     }, [])
 
@@ -89,10 +88,6 @@ export const List = ({navigation}) => {
         })
         .then(response => response.json())
         .then((data) => {
-            console.log(data)
-            if (data.auth_token) {
-                console.log('wow')
-            }
             if (data.auth_token) {
                 setToken(data)
             } else {
@@ -182,9 +177,16 @@ export const List = ({navigation}) => {
                 <TouchableOpacity 
                     style={styles.submit}
                     onPress={() => {
-                    login({'username': loginUsername.trim(), 'password': loginPassword})
-                    setLoginModal(false)
-                    setLoginPassword('')
+                        if (!loginUsername) {
+                            Alert.alert('Error', 'Username cannot be empty')
+                        } else if (!loginPassword) {
+                            Alert.alert('Error', 'Password cannot be empty')
+                        } else {
+                            login({'username': loginUsername.trim(),
+                                'password': loginPassword})
+                        }
+                        setLoginModal(false)
+                        setLoginPassword('')
                     endAnimateElem()
                     }}>
                     <Text style={{fontFamily: 'Roboto-Medium', fontSize: 20}}>Submit</Text>
@@ -222,7 +224,19 @@ export const List = ({navigation}) => {
                     <TouchableOpacity 
                         style={styles.submit}
                         onPress={() => {
-                        auth({'username': signupUsername, 'password': signupPassword, 'full_name': signupFullname, 'email': signupEmail})
+                        if (!signupUsername) {
+                            Alert.alert('Error', 'Username cannot be empty')
+                        } else if (!signupPassword) {
+                            Alert.alert('Error', 'Password cannot be empty')
+                        } else if (signupPassword.length < 8) {
+                            Alert.alert('Error', 'Password must be at least 8 characters long')
+                        } else if (!signupFullname) {
+                            Alert.alert('Error', 'Full name cannot be empty')
+                        } else if (!signupEmail) {
+                            Alert.alert('Error', 'Email cannot be empty')
+                        } else {
+                            auth({'username': signupUsername, 'password': signupPassword, 'full_name': signupFullname, 'email': signupEmail})
+                        }
                         setLoginUsername(signupUsername)
                         setSignupModal(false)
                         setSignupUsername('')

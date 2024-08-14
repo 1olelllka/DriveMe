@@ -74,7 +74,6 @@ export const Payment = ({navigation, route}) => {
             body: JSON.stringify(payments)
         }).then(() => {
             setPaymentSys1(paymentSys)
-            console.log(payments)
             update(payments)
         }
         )
@@ -92,7 +91,6 @@ export const Payment = ({navigation, route}) => {
         })
         .then(response => response.json())
         .then((data) => {
-          console.log(data)
         })
     }
 
@@ -161,7 +159,6 @@ export const Payment = ({navigation, route}) => {
                     <Text style={{marginTop: '5%', marginLeft: '5%',fontFamily: 'Roboto-Regular', fontSize: 20}}>Your CVV</Text>
                     <TextInput style={styles.loginUsernameInput} value={cvvdate} onChangeText={setCVV} maxLength={3} keyboardType='numeric' placeholder='Your CVV' secureTextEntry={true}/>
                     <TouchableOpacity onPress={() => {
-                      console.log(number.length)
                       if ((paymentSys == 'Mastercard' || paymentSys == 'VISA') && number.length == 19 && valid.length != 4 && cvv.length != 3) {
                         endAnimateElem()
                         create_payment({

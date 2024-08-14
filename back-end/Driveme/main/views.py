@@ -7,7 +7,6 @@ from rest_framework import status
 
 from .serializer import CarsListSerializer, UserDetailSerializer, CarsDetailSerializer, RentedCarSerializer, CategorySerializer, PaymentSerialzier
 from .models import Car, User, Rented_Car, Category, Payment, PaymentSys
-import datetime
 
 class CarAPIView(APIView):
     permission_classes = [permissions.AllowAny]
