@@ -22,11 +22,10 @@ DriveMe is a car rental application where users can rent luxury cars. It is a si
 
 ### Frontend
 
-1. Make sure you have `npm` and `Expo CLI v51` installed.
+1. Make sure you have `npm`, `Expo CLI v51` with `Expo Go` installed.
 2. Install the dependencies:
   ```bash
   cd front-end
-  npm i expo@51
   npm i
   ```
 3. Start the frontend:
@@ -39,8 +38,12 @@ DriveMe is a car rental application where users can rent luxury cars. It is a si
 - You must have Expo SDK v51 to run this project on your device.
 - The image sizes may vary depending on the device's screen size.
 - The payment system is currently mocked and only logs transactions in the database.
-- If you want to access the admin panel on backend-side -- username: testUser -- password: password1234
-
+- If you want to access the admin panel on backend-side on URI `/admin/`:
+  ```plain
+  username: testUser
+  password: password1234
+  ```
+  
 ---
 
 ## Screenshots
